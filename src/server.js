@@ -19,6 +19,8 @@ export const setupServer = () => {
     }),
   );
 
+  app.use(express.json());
+
   app.use(contactsRouter);
   
   app.use(errorHandlerMiddleware);

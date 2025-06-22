@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { CONTACT_TYPES } from "../constants/contactTypes";
+import { CONTACT_TYPES } from "../constants/contactTypes.js";
 
 export const createContactValidationSchema = Joi.object({
   name: Joi.string().min(3).max(20).required(),

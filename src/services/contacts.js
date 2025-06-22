@@ -1,9 +1,36 @@
 import createHttpError from "http-errors";
 import { Contact } from "../db/models/contact.js";
+import { createPaginationMetaData } from "../utils/createPaginationMetaData.js";
 
-export const getAllContacts = async() => {
-  const contacts = await Contact.find();
-  return contacts;
+export const getAllContacts = async ({ page, perPage, sortBy, sortOrder, type, isFavorite }) => {
+  const skip = (page - 1) * perPage;
+
+  const filteredContactsQuery = Contact.find();
+
+  if (type) {
+    filteredContactsQuery.where('contactType').equals(type);
+  }
+  if ( typeof isFavorite === 'boolean') {
+    filteredContactsQuery.where('isFavorite').equals(isFavorite);
+  }
+
+  const [contacts, contactsCount] = await Promise.all([
+    Contact.find()
+      .merge(filteredContactsQuery)
+      .skip(skip)
+      .limit(perPage)
+      .sort({
+        [sortBy]: sortOrder,
+      }),
+    Contact.find().merge(filteredContactsQuery).countDocuments(),
+  ]);
+
+  const metaData = createPaginationMetaData(page, perPage, contactsCount);
+
+  return {
+    data: contacts,
+    ...metaData,
+  };
 }; 
 
 export const getContactById = async(contactId) => {

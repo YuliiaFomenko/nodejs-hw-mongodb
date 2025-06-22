@@ -39,7 +39,7 @@ const parseBoolean = (value) => {
 export const parseFilterParams = (query) => {
   return {
     type: parseType(query.type),
-    isFavorite: parseBoolean(query.isFavorite),
+    isFavourite: parseBoolean(query.isFavourite),
   };
 };
 

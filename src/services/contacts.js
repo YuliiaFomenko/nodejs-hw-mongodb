@@ -2,7 +2,7 @@ import createHttpError from "http-errors";
 import { Contact } from "../db/models/contact.js";
 import { createPaginationMetaData } from "../utils/createPaginationMetaData.js";
 
-export const getAllContacts = async ({ page, perPage, sortBy, sortOrder, type, isFavorite }) => {
+export const getAllContacts = async ({ page, perPage, sortBy, sortOrder, type, isFavourite }) => {
   const skip = (page - 1) * perPage;
 
   const filteredContactsQuery = Contact.find();
@@ -10,8 +10,8 @@ export const getAllContacts = async ({ page, perPage, sortBy, sortOrder, type, i
   if (type) {
     filteredContactsQuery.where('contactType').equals(type);
   }
-  if ( typeof isFavorite === 'boolean') {
-    filteredContactsQuery.where('isFavorite').equals(isFavorite);
+  if ( typeof isFavourite === 'boolean') {
+    filteredContactsQuery.where('isFavourite').equals(isFavourite);
   }
 
   const [contacts, contactsCount] = await Promise.all([

@@ -2,10 +2,10 @@ import createHttpError from "http-errors";
 import { Contact } from "../db/models/contact.js";
 import { createPaginationMetaData } from "../utils/createPaginationMetaData.js";
 
-export const getAllContacts = async ({ page, perPage, sortBy, sortOrder, type, isFavourite }) => {
+export const getAllContacts = async ({userId, page, perPage, sortBy, sortOrder, type, isFavourite }) => {
   const skip = (page - 1) * perPage;
 
-  const filteredContactsQuery = Contact.find();
+  const filteredContactsQuery = Contact.find({ userId });
 
   if (type) {
     filteredContactsQuery.where('contactType').equals(type);
@@ -33,8 +33,8 @@ export const getAllContacts = async ({ page, perPage, sortBy, sortOrder, type, i
   };
 }; 
 
-export const getContactById = async(contactId) => {
-  const contact = await Contact.findById(contactId);
+export const getContactById = async(contactId, userId) => {
+  const contact = await Contact.findOne({_id: contactId, userId});
   return contact;
 };
 
@@ -43,8 +43,8 @@ export const createContact = async(payload) => {
   return contact;
 };
 
-export const updateContact = async (contactId, payload, options) => {
-  const result = await Contact.findOneAndUpdate({ _id: contactId }, payload, {
+export const updateContact = async (contactId, payload, userId, options) => {
+  const result = await Contact.findOneAndUpdate({ _id: contactId, userId}, payload, {
     ...options,
     new: true,
     includeResultMetadata: true,
@@ -60,8 +60,8 @@ export const updateContact = async (contactId, payload, options) => {
   };
 };
 
-export const deleteContactById = async (contactId) => {
-  const deletedContact = await Contact.findByIdAndDelete(contactId);
+export const deleteContactById = async (contactId, userId) => {
+  const deletedContact = await Contact.findOneAndDelete({_id: contactId, userId});
 
   return deletedContact;
 };

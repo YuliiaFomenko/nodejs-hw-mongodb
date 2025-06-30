@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { CONTACT_TYPES } from '../../constants/contactTypes.js';
+import { User } from './user.js';
+
 
 const contactSchema = new Schema(
   {
@@ -24,6 +26,11 @@ const contactSchema = new Schema(
       required: true,
       default: Object.values(CONTACT_TYPES.PERSONAL),
     },
+    userId: {
+      type: String,
+      required: true,
+      ref: User,
+    }
   },
   {
     timestamps: true,

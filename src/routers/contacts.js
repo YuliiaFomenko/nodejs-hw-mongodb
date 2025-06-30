@@ -5,8 +5,11 @@ import { validateBody } from '../middlewares/validateBody.js';
 import { createContactValidationSchema } from '../validation/createContactValidationSchema.js';
 import { updateContactValidationSchema } from '../validation/updateContactValidationSchema.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const contactsRouter = Router();
+
+contactsRouter.use('/contacts', authenticate);
 
 contactsRouter.use('/contacts/:contactId', isValidId('contactId'));
 

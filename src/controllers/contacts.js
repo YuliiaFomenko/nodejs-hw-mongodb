@@ -7,6 +7,7 @@ import {
   updateContact,
 } from '../services/contacts.js';
 import { parseFilterParams, parsePaginationParams, parseSortParams } from '../utils/parse-helpers.js';
+import { saveFile } from '../utils/saveFile.js';
 
 export const getAllContactsController = async (req, res) => {
 
@@ -51,9 +52,17 @@ export const getContactByIdController = async (req, res) => {
 
 export const createContactController = async (req, res) => {
 
+  const photo = req.file;
+  let photoUrl;
+
+  if (photo){
+    photoUrl = await saveFile(photo);
+  }
+
   const contact = await createContact({
     ...req.body,
     userId: req.user._id,
+    photo: photoUrl,
 });
 
   return res.status(201).json({
@@ -66,8 +75,15 @@ export const createContactController = async (req, res) => {
 export const patchContactController = async (req, res) => {
   const { contactId } = req.params;
   const { _id: userId } = req.user;
+  const photo = req.file;
+  const updatedFields = {...req.body};
 
-  const { contact } = await updateContact(contactId, req.body, userId, {
+  if (photo){
+    const photoUrl = await saveFile(photo);
+    updatedFields.photo = photoUrl;
+  }
+
+  const { contact } = await updateContact(contactId, updatedFields, userId, {
     upsert: false,
   });
 

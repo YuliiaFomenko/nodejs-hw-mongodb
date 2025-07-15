@@ -1,6 +1,6 @@
 import { createTransport} from "nodemailer";
-import { getEnvVar } from "./getEnvVar";
-import { ENV_VARS } from "../constants/envVars";
+import { getEnvVar } from "./getEnvVar.js";
+import { ENV_VARS } from "../constants/envVars.js";
 import createHttpError from "http-errors";
 
 const mailClient = createTransport({
@@ -8,7 +8,7 @@ const mailClient = createTransport({
   port: getEnvVar(ENV_VARS.SMTP_PORT),
   auth: {
     user: getEnvVar(ENV_VARS.SMTP_USER),
-    password: getEnvVar(ENV_VARS.SMTP_PASSWORD),
+    pass: getEnvVar(ENV_VARS.SMTP_PASSWORD),
   },
 });
 

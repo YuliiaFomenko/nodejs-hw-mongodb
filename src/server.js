@@ -28,10 +28,10 @@ export const setupServer = () => {
 
   app.use(router);
   
+  app.use(notFoundHandler);
+  
   app.use(errorHandlerMiddleware);
   
-  app.use(notFoundHandler);
-
   const PORT = getEnvVar(ENV_VARS.PORT, 3000);
 
   app.listen(PORT, () => {

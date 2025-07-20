@@ -14,7 +14,6 @@ requestBody:
           - name
           - phoneNumber
           - contactType
-          - userId
         properties:
           name:
             description: "Contact's name"
@@ -36,14 +35,10 @@ requestBody:
             description: "Contact's type"
             type: string
             enum: ['work', 'home', 'personal']
-          userId:
-            description: "Contact's user id"
-            type: string
-            example: 6863cc5ea5ed13eeda18bc12
           photo:
             description: "Contact's photo"
             type: string
-            format: uri
+            format: binary
             example: 'https://res.cloudinary.com/dpcogcb0l/image/upload/v1752586355/bwaa748cyarecslqoqhn.jpg'
 responses:
   '201':

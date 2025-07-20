@@ -8,6 +8,7 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import router from './routers/index.js';
 import cookieParser from 'cookie-parser';
 import { PERMANENT_UPLOAD_DIR } from './constants/paths.js';
+import { setupSwagger } from './middlewares/swagger.js';
 
 export const setupServer = () => {
   const app = express();
@@ -23,6 +24,8 @@ export const setupServer = () => {
   app.use(cookieParser());
 
   app.use(express.json());
+
+  app.use('/api-docs', setupSwagger());
 
   app.use('/uploads', express.static(PERMANENT_UPLOAD_DIR));
 
